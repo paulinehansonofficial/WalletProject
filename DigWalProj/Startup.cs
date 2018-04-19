@@ -20,11 +20,13 @@ namespace DigWalProj
 
         public IConfiguration Configuration { get; }
 
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
+            // database is registered within the dependancy injection container of the configservs method
             services.AddDbContext<AccountContext>(options =>
         options.UseSqlite("Data Source=Accounts.db"));
         }

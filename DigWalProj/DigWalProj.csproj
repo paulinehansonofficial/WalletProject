@@ -17,4 +17,7 @@
   <ItemGroup>
     <Folder Include="Views\User\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="wwwroot\EmptyHTMLFile.html" />
+  </ItemGroup>
 </Project>
