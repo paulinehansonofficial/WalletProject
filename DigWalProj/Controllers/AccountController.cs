@@ -33,7 +33,7 @@ namespace DigWalProj.Controllers
             }
 
             var accounts = await _context.Account
-                .SingleOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(a => a.ID == id);
             if (accounts == null)
             {
                 return NotFound();
@@ -53,11 +53,15 @@ namespace DigWalProj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,AccountCreated,Balance")] Accounts accounts)
+        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Balance")] Accounts accounts)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(accounts);
+                // try to set the date/time ?
+         
+                accounts.AccountCreated = DateTime.Now;
+                accounts.Balance = 0;
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -72,7 +76,7 @@ namespace DigWalProj.Controllers
                 return NotFound();
             }
 
-            var accounts = await _context.Account.SingleOrDefaultAsync(m => m.ID == id);
+            var accounts = await _context.Account.SingleOrDefaultAsync(a => a.ID == id);
             if (accounts == null)
             {
                 return NotFound();
@@ -83,9 +87,11 @@ namespace DigWalProj.Controllers
         // POST: Account/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        // Only "bind" properties that you want to be able to change when editing. (So not things like account created and really even student id 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,AccountCreated,Balance")] Accounts accounts)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Balance")] Accounts accounts)
         {
             if (id != accounts.ID)
             {
@@ -124,7 +130,7 @@ namespace DigWalProj.Controllers
             }
 
             var accounts = await _context.Account
-                .SingleOrDefaultAsync(m => m.ID == id);
+                .SingleOrDefaultAsync(a => a.ID == id);
             if (accounts == null)
             {
                 return NotFound();
@@ -138,7 +144,7 @@ namespace DigWalProj.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var accounts = await _context.Account.SingleOrDefaultAsync(m => m.ID == id);
+            var accounts = await _context.Account.SingleOrDefaultAsync(a => a.ID == id);
             _context.Account.Remove(accounts);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
