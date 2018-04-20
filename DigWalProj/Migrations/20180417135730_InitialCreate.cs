@@ -12,6 +12,8 @@ namespace DigWalProj.Migrations
                 name: "Account",
                 columns: table => new
                 {
+
+                    // TODO - make it so this field is only positive numbers
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AccountCreated = table.Column<DateTime>(type: "TEXT", nullable: false),

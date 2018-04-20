@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -58,6 +59,7 @@ namespace DigWalProj.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(accounts);
+
                 // try to set the date/time ?
          
                 accounts.AccountCreated = DateTime.Now;
