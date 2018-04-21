@@ -39,3 +39,5 @@ Thumbs.db
 
 # dotCover
 *.dotCover
+
+DigWalProj/wwwroot/lib/*
