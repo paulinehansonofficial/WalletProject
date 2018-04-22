@@ -43,3 +43,5 @@ Thumbs.db
 DigWalProj/wwwroot/lib/*
 
 DigWalProj/Accounts.db
+
+.vscode

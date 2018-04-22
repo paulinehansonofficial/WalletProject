@@ -5,7 +5,7 @@ using DigWalProj.Models;
 
 namespace DigWalProj.Models
 {
-    public class Projects
+    public class Project
     {
         public int projID { get; set; }
         public List<Accounts> students { get; set; }
