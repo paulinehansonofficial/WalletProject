@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 
-namespace DigWalProj.Models
+namespace DigWalProj.Data
 {
-    public class AccountContext : IdentityDbContext<ApplicationUser>
+    public class DatabaseContext : IdentityDbContext<ApplicationUser>
     {
-        public AccountContext(DbContextOptions<AccountContext> options)
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
         }

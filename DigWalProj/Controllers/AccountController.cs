@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using DigWalProj.Models;
+using DigWalProj.Data;
 using DigWalProj.Models.AccountViewModels;
 
 namespace DigWalProj.Controllers
@@ -20,12 +21,12 @@ namespace DigWalProj.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly AccountContext _context;
+        private readonly DatabaseContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
 
         public AccountController(
-            AccountContext context,
+            DatabaseContext context,
             SignInManager<ApplicationUser> signInManager, 
             ILogger<AccountController> logger)
         {

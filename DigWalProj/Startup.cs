@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DigWalProj.Models;
+using DigWalProj.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,18 +22,17 @@ namespace DigWalProj
 
         public IConfiguration Configuration { get; }
 
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
             // database is registered within the dependency injection container of the configservs method
-            services.AddDbContext<AccountContext>(options =>
-                options.UseSqlite("Data Source=Accounts.db"));
+            services.AddDbContext<DatabaseContext>(options =>
+                options.UseSqlite("Data Source=Data/Application.db"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AccountContext>()
+                .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
+using DigWalProj.Data;
 
 namespace DigWalProj.Models
 {
@@ -16,8 +17,8 @@ namespace DigWalProj.Models
             var user = new ApplicationUser { UserName = "testemail@test.com", Email = "testemail@test.com" };
             var result = await userManager.CreateAsync(user, "$69Password");
 
-            using (var context = new AccountContext(
-                serviceProvider.GetRequiredService<DbContextOptions<AccountContext>>()))
+            using (var context = new DatabaseContext(
+                serviceProvider.GetRequiredService<DbContextOptions<DatabaseContext>>()))
             {
                 // Look for any accounts.
                 if (context.Account.Any())
