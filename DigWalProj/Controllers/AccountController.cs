@@ -17,6 +17,7 @@ using DigWalProj.Models.AccountViewModels;
 
 namespace DigWalProj.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly AccountContext _context;
@@ -219,15 +220,15 @@ namespace DigWalProj.Controllers
             return View(model);
         }
 
-        // Get login working first, then logout
-        // [HttpPost]
-        // [ValidateAntiForgeryToken]
-        // public async Task<IActionResult> Logout()
-        // {
-        //     await _signInManager.SignOutAsync();
-        //     _logger.LogInformation("User logged out.");
-        //     return RedirectToAction(nameof(HomeController.Index), "Home");
-        // }
+        // Post: Account/Logout
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
 
         private IActionResult RedirectToLocal(string returnUrl)
         {
