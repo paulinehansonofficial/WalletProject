@@ -1,18 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Microsoft.AspNetCore.Identity;
 using System.Linq;
 
 namespace DigWalProj.Models
 {
     public static class SeedData
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public async static void Initialize(IServiceProvider serviceProvider)
         {
+            
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+            var user = new ApplicationUser { UserName = "testemail@test.com", Email = "testemail@test.com" };
+            var result = await userManager.CreateAsync(user, "$69Password");
+
             using (var context = new AccountContext(
                 serviceProvider.GetRequiredService<DbContextOptions<AccountContext>>()))
             {
-                // Look for any movies.
+                // Look for any accounts.
                 if (context.Account.Any())
                 {
                     return;   // DB has been seeded

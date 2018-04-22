@@ -25,7 +25,6 @@ namespace DigWalProj
 
                 try
                 {
-                    // Requires using MvcMovie.Models;
                     SeedData.Initialize(services);
                 }
                 catch (Exception ex)

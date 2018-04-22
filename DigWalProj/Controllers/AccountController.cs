@@ -1,22 +1,36 @@
 using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Linq;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using DigWalProj.Models;
+using DigWalProj.Models.AccountViewModels;
 
 namespace DigWalProj.Controllers
 {
     public class AccountController : Controller
     {
         private readonly AccountContext _context;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger _logger;
 
-        public AccountController(AccountContext context)
+        public AccountController(
+            AccountContext context,
+            SignInManager<ApplicationUser> signInManager, 
+            ILogger<AccountController> logger)
         {
             _context = context;
+            _signInManager = signInManager;
+            _logger = logger;
         }
 
         // GET: Account
@@ -69,6 +83,12 @@ namespace DigWalProj.Controllers
             }
             return View(accounts);
         }
+
+        public async Task<IActionResult> CreateUser()
+        {
+            return View();
+        }
+
 
         // GET: Account/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -155,6 +175,70 @@ namespace DigWalProj.Controllers
         private bool AccountsExists(int id)
         {
             return _context.Account.Any(e => e.ID == id);
+        }
+
+        // GET: Account/AccessDenied
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        // Get Account/Login
+        [AllowAnonymous]        
+        public async Task<IActionResult> Login(string returnUrl = null)
+        {
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        // Post: Account/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User logged in");
+                    return RedirectToLocal(returnUrl);
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+            }
+
+            return View(model);
+        }
+
+        // Get login working first, then logout
+        // [HttpPost]
+        // [ValidateAntiForgeryToken]
+        // public async Task<IActionResult> Logout()
+        // {
+        //     await _signInManager.SignOutAsync();
+        //     _logger.LogInformation("User logged out.");
+        //     return RedirectToAction(nameof(HomeController.Index), "Home");
+        // }
+
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
         }
     }
 }
