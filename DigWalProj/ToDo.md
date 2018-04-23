@@ -14,4 +14,5 @@
 - Add a property of the type bool to the `ApplicationUser` to check if it is their first time signing in
 
 - Redirect the `ApplicationUser` to the `ResetPassword` view if it is their first time signing in, so they can reset the password their teacher assigned them.
+
  

@@ -23,5 +23,6 @@ namespace DigWalProj.Models
         // [DisplayFormat(DataFormatString ="{0:C0}")]
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
+
     }
 }

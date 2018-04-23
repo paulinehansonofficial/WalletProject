@@ -75,13 +75,14 @@ namespace DigWalProj.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(accounts);
-
-                // try to set the date/time ?
          
                 accounts.AccountCreated = DateTime.Now;
                 accounts.Balance = 0;
+
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
+
             }
             return View(accounts);
         }
