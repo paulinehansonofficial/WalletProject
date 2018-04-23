@@ -86,7 +86,7 @@ namespace DigWalProj.Controllers
             return View(accounts);
         }
 
-        public async Task<IActionResult> CreateUser()
+        public IActionResult CreateUser()
         {
             return View();
         }
@@ -113,6 +113,7 @@ namespace DigWalProj.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 
         // Only "bind" properties that you want to be able to change when editing. (So not things like account created and really even student id 
+        // TODO: Change this so it uses a viewmodel?
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Balance")] Accounts accounts)

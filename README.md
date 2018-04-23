@@ -24,7 +24,7 @@ Run the application with the following command:
 cd DigWalProj
 dotnet run
 ```
-> Note: this will run the SeedData script (found under` Models/SeedData.cs`) to provide you with some test data for the system.
+> Note: this will run the SeedData script (found under ` Models/SeedData.cs`) to provide you with some test data for the system.
 
 ## Sharing updates to the database 
 If you are making changes to the model classes (any model class under `Models/*.cs`) or the database context (`Models/AccountContext.cs`), the database can be updated by generating a *migration* for the change.
@@ -48,4 +48,5 @@ dornet ef datbase update InitialCreate
 
 Suggested reading to understand more about how the Entity Frameworks assists in the management of database changes:
 https://docs.microsoft.com/en-us/aspnet/core/data/ef-mvc/migrations
+
 https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/teams
