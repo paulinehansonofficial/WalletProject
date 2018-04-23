@@ -18,9 +18,6 @@ namespace DigWalProj.Models
         [DataType(DataType.Date)]
         public DateTime AccountCreated { get; set; }
 
-        // Should display as currency doesn't seem to work, however
-        // but it has a symbol, just not a dollar sign
-        // [DisplayFormat(DataFormatString ="{0:C0}")]
         [DataType(DataType.Currency)]
         public decimal Balance { get; set; }
 
