@@ -23,4 +23,9 @@
   <ItemGroup>
     <Compile Remove="Models\User.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Digital_Wallet_ClassLib">
+      <HintPath>bin\Debug\netcoreapp2.0\Digital_Wallet_ClassLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
