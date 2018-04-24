@@ -9,7 +9,8 @@ namespace DigWalProj.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
-        public string ID { get; set; }
+        [Display(Name = "Username")]
+        public string userID { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
