@@ -1,0 +1,44 @@
+@model DigWalProj.Models.Advertisement
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Advertisement</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="adId" />
+            <div class="form-group">
+                <label asp-for="projectId" class="control-label"></label>
+                <input asp-for="projectId" class="form-control" />
+                <span asp-validation-for="projectId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="adName" class="control-label"></label>
+                <input asp-for="adName" class="form-control" />
+                <span asp-validation-for="adName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="adDescription" class="control-label"></label>
+                <input asp-for="adDescription" class="form-control" />
+                <span asp-validation-for="adDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

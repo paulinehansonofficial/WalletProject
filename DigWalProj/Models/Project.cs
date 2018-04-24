@@ -7,7 +7,8 @@ namespace DigWalProj.Models
 {
     public class Project
     {
-        public int projID { get; set; }
+        [Key]
+        public int projId { get; set; }
         public List<Accounts> students { get; set; }
 
         // Display(Name = "Team")]
