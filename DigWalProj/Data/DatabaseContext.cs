@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using DigWalProj.Models;
 
 
 namespace DigWalProj.Data
@@ -11,6 +12,6 @@ namespace DigWalProj.Data
         {
         }
 
-        public DbSet<DigWalProj.Models.Accounts> Account { get; set; } 
+        public DbSet<DigWalProj.Models.ApplicationUser> ApplicationUser { get; set; } 
     }
 }

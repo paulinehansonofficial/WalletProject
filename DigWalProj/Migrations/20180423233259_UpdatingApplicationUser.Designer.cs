@@ -11,9 +11,10 @@ using System;
 namespace DigWalProj.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class AccountContextModelSnapshot : ModelSnapshot
+    [Migration("20180423233259_UpdatingApplicationUser")]
+    partial class UpdatingApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

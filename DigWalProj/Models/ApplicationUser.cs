@@ -2,14 +2,18 @@ using System;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-public class ApplicationUser : IdentityUser
+namespace DigWalProj.Models
 {
+    public class ApplicationUser : IdentityUser
+    {
+        // Additional Properties
+        [Display(Name="First Name")]
+        public string FirstName { get; set; }
+        [Display(Name="Second Name")]
+        public string LastName { get; set; }
+        [Display(Name ="Student Number")]
+        public string userID { get; set; }
 
-    // userID
-    // firstName
-    // lastName
-
-    // how to manage phoneNumber?
-    // it's a field in IdentityUser, but we don't want the teacher to have to give the phone number for every student when creating the account
-
+        // emailAddress and password are a part of identity user
+    }
 }

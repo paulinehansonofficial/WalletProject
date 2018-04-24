@@ -14,93 +14,43 @@ namespace DigWalProj.Models
             
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            var user = new ApplicationUser { UserName = "testemail@test.com", Email = "testemail@test.com" };
+            var user = new ApplicationUser { userID= "1", UserName = "testemail@test.com", Email = "testemail@test.com" };
             var result = await userManager.CreateAsync(user, "$69Password");
 
             using (var context = new DatabaseContext(
                 serviceProvider.GetRequiredService<DbContextOptions<DatabaseContext>>()))
             {
                 // Look for any accounts.
-                if (context.Account.Any())
+                if (context.ApplicationUser.Any())
                 {
                     return;   // DB has been seeded
                 }
 
-                context.Account.AddRange(
-                     new Accounts
+                context.ApplicationUser.AddRange(
+                     new ApplicationUser
                      {
-                         ID = 101664287,
+                         userID = "101664287",
                          FirstName = "Michelle",
                          LastName = "Hughes",
-                         AccountCreated = DateTime.Now,
-                         Balance = 0,
+                         PasswordHash = "AQAAAAEAACcQAAAAEOUZFC8zXn5MN8TJWbnPBIzAxFa12w9/bhV7jMgEYeeWWEPA4ycaMzqgoUSGUAS8Og=="
                      },
 
-                    new Accounts
+                    new ApplicationUser
                     {
-                        ID = 101664288,
-                        FirstName = "Macy",
-                        LastName = "Huggins",
-                        AccountCreated = DateTime.Now,
-                        Balance = 0,
-                    },
-
-                    new Accounts
-                    {
-                        ID = 109064287,
+                        userID = "109064287",
                         FirstName = "Mikaela",
                         LastName = "Howarth",
-                        AccountCreated = DateTime.Now,
-                        Balance = 0,
+                        Email = "Mikaela@Howarth.com",
+                        PasswordHash = "AQAAAAEAACcQAAAAEOUZFC8zXn5MN8TJWbnPBIzAxFa12w9/bhV7jMgEYeeWWEPA4ycaMzqgoUSGUAS8Og=="
                     },
 
-                    new Accounts
+                    new ApplicationUser
                     {
-                        ID = 101754287,
-                        FirstName = "Jessica",
-                        LastName = "Wilson",
-                        AccountCreated = DateTime.Now,
-                        Balance = 0,
-                    },
-                    new Accounts
-                    {
-                        ID = 146664287,
-                        FirstName = "Alison",
-                        LastName = "Jeffries",
-                        AccountCreated = DateTime.Now,
-                        Balance = 0,
-                    },
-                    new Accounts
-                    {
-                        ID = 101677287,
-                        FirstName = "Nicholas",
-                        LastName = "Smith",
-                        AccountCreated = DateTime.Now,
-                        Balance = 0,
-                    },
-                    new Accounts
-                    {
-                        ID = 101667657,
-                        FirstName = "Myles",
-                        LastName = "Homo",
-                        AccountCreated = DateTime.Now,
-                        Balance = 0,
-                    },
-                    new Accounts
-                    {
-                        ID = 101622287,
+                        userID = "101622287",
                         FirstName = "Peter",
                         LastName = "Pan",
-                        AccountCreated = DateTime.Now,
-                        Balance = 0,
-                    },
-                    new Accounts
-                    {
-                        ID = 105554287,
-                        FirstName = "Patrick",
-                        LastName = "Stewart",
-                        AccountCreated = DateTime.Now,
-                        Balance = 0,
+                        Email = "Peter@pan.com",
+                        PasswordHash = "AQAAAAEAACcQAAAAEOUZFC8zXn5MN8TJWbnPBIzAxFa12w9/bhV7jMgEYeeWWEPA4ycaMzqgoUSGUAS8Og=="                     
                     }
                 );
                 context.SaveChanges();

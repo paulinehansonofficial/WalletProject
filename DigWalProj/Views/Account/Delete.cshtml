@@ -1,4 +1,4 @@
-@model DigWalProj.Models.Accounts
+@model DigWalProj.Models.ApplicationUser
 
 @{
     ViewData["Title"] = "Delete";
@@ -23,22 +23,10 @@
         <dd>
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AccountCreated)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AccountCreated)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Balance)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Balance)
-        </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="ID" />
+        <input type="hidden" asp-for="userID" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
         <a asp-action="Index">Back to List</a>
     </form>
