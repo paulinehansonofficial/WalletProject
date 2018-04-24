@@ -24,33 +24,36 @@ namespace DigWalProj.Controllers
         private readonly DatabaseContext _context;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public AccountController(
             DatabaseContext context,
-            SignInManager<ApplicationUser> signInManager, 
+            SignInManager<ApplicationUser> signInManager,
+            UserManager<ApplicationUser> userManager, 
             ILogger<AccountController> logger)
         {
             _context = context;
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         // GET: Account
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Account.ToListAsync());
+            return View(await _context.ApplicationUser.ToListAsync());
         }
 
         // GET: Account/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var accounts = await _context.Account
-                .SingleOrDefaultAsync(a => a.ID == id);
+            var accounts = await _context.ApplicationUser
+                .SingleOrDefaultAsync(a => a.userID == id);
             if (accounts == null)
             {
                 return NotFound();
@@ -59,49 +62,64 @@ namespace DigWalProj.Controllers
             return View(accounts);
         }
 
-        // GET: Account/Create
+        // POST: Account/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // [HttpPost]
+        // [ValidateAntiForgeryToken]
+        // public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Balance")] Accounts accounts)
+        // {
+        //     if (ModelState.IsValid)
+        //     {
+        //         _context.Add(accounts);
+         
+        //         accounts.AccountCreated = DateTime.Now;
+        //         accounts.Balance = 0;
+
+        //         await _context.SaveChangesAsync();
+
+        //         return RedirectToAction(nameof(Index));
+
+        //     }
+        //     return View(accounts);
+        // }
+
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Account/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,FirstName,LastName,Balance")] Accounts accounts)
+        public async Task<IActionResult> Create(CreateViewModel model, string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                _context.Add(accounts);
-         
-                accounts.AccountCreated = DateTime.Now;
-                accounts.Balance = 0;
+                var user = new ApplicationUser{ UserName = model.userID, Email = model.Email, userID = model.userID, FirstName = model.FirstName,
+                LastName = model.LastName };
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("Created a new account with password.");
 
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
-
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
             }
-            return View(accounts);
-        }
-
-        public IActionResult CreateUser()
-        {
-            return View();
+            return View(model);
         }
 
 
         // GET: Account/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var accounts = await _context.Account.SingleOrDefaultAsync(a => a.ID == id);
+            var accounts = await _context.ApplicationUser.SingleOrDefaultAsync(a => a.userID == id);
             if (accounts == null)
             {
                 return NotFound();
@@ -117,9 +135,9 @@ namespace DigWalProj.Controllers
         // TODO: Change this so it uses a viewmodel?
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Balance")] Accounts accounts)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName")] ApplicationUser applicationUser)
         {
-            if (id != accounts.ID)
+            if (id != applicationUser.userID)
             {
                 return NotFound();
             }
@@ -128,12 +146,12 @@ namespace DigWalProj.Controllers
             {
                 try
                 {
-                    _context.Update(accounts);
+                    _context.Update(applicationUser);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountsExists(accounts.ID))
+                    if (!AccountsExists(applicationUser.userID))
                     {
                         return NotFound();
                     }
@@ -144,19 +162,19 @@ namespace DigWalProj.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(accounts);
+            return View(applicationUser);
         }
 
         // GET: Account/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var accounts = await _context.Account
-                .SingleOrDefaultAsync(a => a.ID == id);
+            var accounts = await _context.ApplicationUser
+                .SingleOrDefaultAsync(a => a.userID == id);
             if (accounts == null)
             {
                 return NotFound();
@@ -168,17 +186,17 @@ namespace DigWalProj.Controllers
         // POST: Account/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var accounts = await _context.Account.SingleOrDefaultAsync(a => a.ID == id);
-            _context.Account.Remove(accounts);
+            var accounts = await _context.ApplicationUser.SingleOrDefaultAsync(a => a.userID == id);
+            _context.ApplicationUser.Remove(accounts);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AccountsExists(int id)
+        private bool AccountsExists(string id)
         {
-            return _context.Account.Any(e => e.ID == id);
+            return _context.ApplicationUser.Any(e => e.userID == id);
         }
 
         // GET: Account/AccessDenied
@@ -207,7 +225,7 @@ namespace DigWalProj.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.userID, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in");
@@ -244,5 +262,37 @@ namespace DigWalProj.Controllers
                 return RedirectToAction(nameof(HomeController.Index), "Home");
             }
         }
+
+        public IActionResult UpdateUser(ApplicationUser user)
+        {
+            return View(user);
+        }
+
+        // public async Task<IActionResult> UpdateUser(UpdateUserViewModel model)
+        // {
+        //     if (!ModelState.IsValid)
+        //     {
+        //         return View(model);
+        //     }
+
+        //     var user = await _userManager.GetUserAsync(User);
+        //     if (user == null)
+        //     {
+        //         throw new ApplicationException($"Unable to load User with ID '{_userManager.GetUserId(User)}'.");
+        //     }
+
+        // // work out how to update the model from the viewmodel (only example is from updatePassword)
+        // // might be able to do the same way as update from above, but the binding is unneccesary
+
+        // }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach ( var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+        
     }
 }

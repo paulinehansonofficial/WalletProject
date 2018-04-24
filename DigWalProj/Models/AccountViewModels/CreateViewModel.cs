@@ -6,8 +6,20 @@ using System.Threading.Tasks;
 
 namespace DigWalProj.Models.AccountViewModels
 {
-    public class CreateUserViewModel
+    public class CreateViewModel
     {
+        [Required]
+        [Display(Name = "Student Number")]
+        public string userID { get; set; }
+
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -19,6 +31,7 @@ namespace DigWalProj.Models.AccountViewModels
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
