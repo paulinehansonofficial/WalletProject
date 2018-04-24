@@ -41,19 +41,19 @@ namespace DigWalProj.Controllers
         // GET: Account
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Account.ToListAsync());
+            return View(await _context.ApplicationUser.ToListAsync());
         }
 
         // GET: Account/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var accounts = await _context.Account
-                .SingleOrDefaultAsync(a => a.ID == id);
+            var accounts = await _context.ApplicationUser
+                .SingleOrDefaultAsync(a => a.userID == id);
             if (accounts == null)
             {
                 return NotFound();
@@ -96,8 +96,8 @@ namespace DigWalProj.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser{ UserName = model.ID, Email = model.Email, userID = model.ID, firstName = model.FirstName,
-                lastName = model.LastName };
+                var user = new ApplicationUser{ UserName = model.userID, Email = model.Email, userID = model.userID, FirstName = model.FirstName,
+                LastName = model.LastName };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -112,14 +112,14 @@ namespace DigWalProj.Controllers
 
 
         // GET: Account/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var accounts = await _context.Account.SingleOrDefaultAsync(a => a.ID == id);
+            var accounts = await _context.ApplicationUser.SingleOrDefaultAsync(a => a.userID == id);
             if (accounts == null)
             {
                 return NotFound();
@@ -135,9 +135,9 @@ namespace DigWalProj.Controllers
         // TODO: Change this so it uses a viewmodel?
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,FirstName,LastName,Balance")] Accounts accounts)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,FirstName,LastName")] ApplicationUser applicationUser)
         {
-            if (id != accounts.ID)
+            if (id != applicationUser.userID)
             {
                 return NotFound();
             }
@@ -146,12 +146,12 @@ namespace DigWalProj.Controllers
             {
                 try
                 {
-                    _context.Update(accounts);
+                    _context.Update(applicationUser);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountsExists(accounts.ID))
+                    if (!AccountsExists(applicationUser.userID))
                     {
                         return NotFound();
                     }
@@ -162,19 +162,19 @@ namespace DigWalProj.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(accounts);
+            return View(applicationUser);
         }
 
         // GET: Account/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var accounts = await _context.Account
-                .SingleOrDefaultAsync(a => a.ID == id);
+            var accounts = await _context.ApplicationUser
+                .SingleOrDefaultAsync(a => a.userID == id);
             if (accounts == null)
             {
                 return NotFound();
@@ -186,17 +186,17 @@ namespace DigWalProj.Controllers
         // POST: Account/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var accounts = await _context.Account.SingleOrDefaultAsync(a => a.ID == id);
-            _context.Account.Remove(accounts);
+            var accounts = await _context.ApplicationUser.SingleOrDefaultAsync(a => a.userID == id);
+            _context.ApplicationUser.Remove(accounts);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AccountsExists(int id)
+        private bool AccountsExists(string id)
         {
-            return _context.Account.Any(e => e.ID == id);
+            return _context.ApplicationUser.Any(e => e.userID == id);
         }
 
         // GET: Account/AccessDenied
