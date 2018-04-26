@@ -31,8 +31,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Account" asp-action="Index">Users</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">Projects</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Job Advertisement</a></li>
+                    <li><a asp-area="" asp-controller="Project" asp-action="Index">Projects</a></li>
+                    <li><a asp-area="" asp-controller="PMTeam" asp-action="Index">Teams</a></li>
+                    <li><a asp-area="" asp-controller="Advertisement" asp-action="Index">Job Advertisement</a></li>
                 </ul>
                 @await Html.PartialAsync("_LayoutAccountPartial.cshtml")
             </div>
