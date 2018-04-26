@@ -11,13 +11,52 @@ using System;
 namespace DigWalProj.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180426072158_UpdatedDB")]
+    partial class UpdatedDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452");
+
+            modelBuilder.Entity("DigWalProj.Models.Accounts", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("AccountCreated");
+
+                    b.Property<decimal>("Balance");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<int?>("ProjectprojId");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ProjectprojId");
+
+                    b.ToTable("Accounts");
+                });
+
+            modelBuilder.Entity("DigWalProj.Models.Advertisement", b =>
+                {
+                    b.Property<int>("adId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("adDescription");
+
+                    b.Property<string>("adName");
+
+                    b.Property<string>("projectId");
+
+                    b.HasKey("adId");
+
+                    b.ToTable("Advertisement");
+                });
 
             modelBuilder.Entity("DigWalProj.Models.ApplicationUser", b =>
                 {
@@ -48,6 +87,10 @@ namespace DigWalProj.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
 
+                    b.Property<int?>("PMTeamteamId");
+
+                    b.Property<int?>("PMTeamteamId1");
+
                     b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
@@ -72,7 +115,47 @@ namespace DigWalProj.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
+                    b.HasIndex("PMTeamteamId");
+
+                    b.HasIndex("PMTeamteamId1");
+
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("DigWalProj.Models.PMTeam", b =>
+                {
+                    b.Property<int>("teamId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("teamDescription");
+
+                    b.Property<string>("teamName");
+
+                    b.HasKey("teamId");
+
+                    b.ToTable("PMTeam");
+                });
+
+            modelBuilder.Entity("DigWalProj.Models.Project", b =>
+                {
+                    b.Property<int>("projId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("AccountCreated");
+
+                    b.Property<decimal>("Balance");
+
+                    b.Property<DateTime>("DueDate");
+
+                    b.Property<int?>("PMTeamteamId");
+
+                    b.Property<string>("ProjectName");
+
+                    b.HasKey("projId");
+
+                    b.HasIndex("PMTeamteamId");
+
+                    b.ToTable("Project");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -182,11 +265,31 @@ namespace DigWalProj.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("DigWalProj.Models.Accounts", b =>
+                {
+                    b.HasOne("DigWalProj.Models.Project")
+                        .WithMany("students");
+                });
+
+            modelBuilder.Entity("DigWalProj.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("DigWalProj.Models.PMTeam")
+                        .WithMany("resourceMembers");
+
+                    b.HasOne("DigWalProj.Models.PMTeam")
+                        .WithMany("teamMembers");
+                });
+
+            modelBuilder.Entity("DigWalProj.Models.Project", b =>
+                {
+                    b.HasOne("DigWalProj.Models.PMTeam")
+                        .WithMany("teamProjects");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
                         .WithMany()
-                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -194,7 +297,6 @@ namespace DigWalProj.Migrations
                 {
                     b.HasOne("DigWalProj.Models.ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -202,7 +304,6 @@ namespace DigWalProj.Migrations
                 {
                     b.HasOne("DigWalProj.Models.ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -210,12 +311,10 @@ namespace DigWalProj.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
                         .WithMany()
-                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DigWalProj.Models.ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -223,7 +322,6 @@ namespace DigWalProj.Migrations
                 {
                     b.HasOne("DigWalProj.Models.ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
